@@ -1,0 +1,37 @@
+version: "3.5"
+
+services:
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: service_backend
+    image: service-backend:latest
+    environment:
+      PROFILE: default
+    restart: always
+
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+      args:
+        MODE: dco # 배포 전 확인
+        BACKEND_URL: http://localhost:8080 # 배포 전 확인
+    container_name: service-frontend
+    image: service-frontend-dco:latest
+    ports:
+      - "80:8000"
+    restart: always
+
+  nginx: # frontend에서 CORS 문제 없이 backend 접근용
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: service-nginx
+    links:
+      - "backend:backend-server"
+    ports:
+      - "8080:80" # 배포 전 확인 (backend port와 sync 필요)
