@@ -10,7 +10,7 @@
     "lint": "npx prettier --write .",
     "clean": "npx rimraf node_modules dist coverage yarn-error.log",
     "reset": "yarn clean && npx rimraf yarn.lock npm_packages",
-    "prepare": "cd .. && husky install front/.husky"
+    "prepare": "cd .. && husky install frontend/.husky"
   },
   "dependencies": {
     "react": "17.0.0",
